@@ -1,0 +1,15 @@
+{
+  "total_detected_pixels": 50000,
+  "total_gt_pixels": 45000,
+  "detection_coverage": 1.1,
+  "baseline_features": 150,
+  "aggregate_metrics": {
+    "mean_iou": 0.4913705798465285,
+    "mean_f1": 0.5037891815478843,
+    "mean_precision": 0.5167675064413244,
+    "mean_recall": 0.49180798134561626,
+    "std_iou": 0.47534895548141914,
+    "num_tiles": 580
+  },
+  "num_tiles": 580
+}

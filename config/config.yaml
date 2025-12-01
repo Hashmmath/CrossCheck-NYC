@@ -1,0 +1,152 @@
+# Brooklyn Crosswalk QA Configuration
+# ====================================
+
+project:
+  name: "crosswalk-qa-brooklyn"
+  description: "Crosswalk detection QA system for Brooklyn, NYC"
+  version: "0.1.0"
+
+# Geographic scope
+location:
+  borough: "Brooklyn"
+  borough_code: "BK"  # NYC borough code
+  # Bounding box for Brooklyn (approximate)
+  bbox:
+    west: -74.0424
+    south: 40.5707
+    east: -73.8334
+    north: 40.7395
+  # Test area (smaller subset for development)
+  test_area:
+    name: "downtown_brooklyn"
+    # Downtown Brooklyn bounding box
+    bbox:
+      west: -73.9900
+      south: 40.6870
+      east: -73.9750
+      north: 40.6970
+  # CRS settings
+  crs:
+    source: "EPSG:2263"  # NYC State Plane (feet)
+    target: "EPSG:4326"  # WGS84 for output
+
+# Data paths
+paths:
+  root: "./data"
+  raw:
+    ortho: "./data/raw/ortho"
+    lion: "./data/raw/lion"
+    osm: "./data/raw/osm"
+    vision_zero: "./data/raw/vision_zero"
+  processed:
+    tiles: "./data/processed/tiles"
+    ground_truth: "./data/processed/ground_truth"
+    predictions: "./data/processed/predictions"
+  outputs:
+    masks: "./data/outputs/masks"
+    vectors: "./data/outputs/vectors"
+    metrics: "./outputs/metrics"
+    figures: "./outputs/figures"
+
+# Data sources
+data_sources:
+  orthoimagery:
+    # NYC Orthoimagery - Brooklyn
+    url: "https://gis.ny.gov/new-york-city-orthoimagery-downloads"
+    year: 2022  # Preferred year
+    format: "GeoTIFF"
+    resolution: 0.5  # feet per pixel
+  
+  lion:
+    # NYC LION street centerline
+    url: "https://data.cityofnewyork.us/api/views/2v4z-66xt/rows.csv?accessType=DOWNLOAD"
+    format: "CSV"
+  
+  osm:
+    # Geofabrik New York extract
+    url: "https://download.geofabrik.de/north-america/us/new-york-latest.osm.pbf"
+    crossing_tags:
+      - "highway=crossing"
+      - "crossing=*"
+  
+  nyc_tiles:
+    # NYC Map Tiles for quick prototyping
+    base_url: "https://tiles.arcgis.com/tiles/yG5s3afENB5iO9fj/arcgis/rest/services"
+    aerial: "NYC_Orthos_-_2022/MapServer/tile/{z}/{y}/{x}"
+    zoom_levels: [18, 19, 20]
+
+# Tile2Net configuration
+tile2net:
+  # Model settings
+  model:
+    weights_url: "https://drive.google.com/drive/folders/1cu-MATHgekWUYqj9TFr12utl6VB-XKSu"
+    weights_path: "./models/tile2net_weights"
+  
+  # Inference settings
+  inference:
+    tile_size: 512  # pixels
+    zoom_level: 19
+    batch_size: 4
+    output_probabilities: true  # Critical: need probabilities, not just masks
+  
+  # Classes (from Tile2Net)
+  classes:
+    0: "background"
+    1: "road"
+    2: "sidewalk"
+    3: "crosswalk"  # Our target class
+    4: "footpath"
+  target_class: 3  # crosswalk
+
+# Evaluation settings
+evaluation:
+  # Alignment
+  alignment:
+    target_resolution: 0.5  # feet per pixel
+    resampling: "nearest"
+  
+  # Threshold sweep
+  thresholds:
+    start: 0.3
+    end: 0.9
+    step: 0.05
+  
+  # Morphological operations
+  morphology:
+    operations: ["open", "close"]
+    kernel_sizes: [3, 5, 7]
+  
+  # Calibration
+  calibration:
+    n_bins: 10
+    strategy: "uniform"  # or "quantile"
+  
+  # Ground truth matching
+  matching:
+    buffer_distance: 2.0  # meters
+    iou_threshold: 0.5
+
+# Visualization settings
+visualization:
+  # Colors for overlays
+  colors:
+    tp: [0, 255, 0, 128]      # Green with alpha
+    fp: [255, 0, 0, 128]      # Red with alpha
+    fn: [0, 0, 255, 128]      # Blue with alpha
+    prediction: [255, 255, 0, 128]  # Yellow with alpha
+  
+  # Map settings
+  map:
+    center: [40.6920, -73.9825]  # Downtown Brooklyn
+    zoom: 16
+    style: "mapbox://styles/mapbox/satellite-v9"
+
+# Output settings
+output:
+  formats:
+    vectors: ["geojson", "shapefile"]
+    metrics: ["csv", "json"]
+    figures: ["png", "svg"]
+  
+  # Export CRS
+  export_crs: "EPSG:4326"

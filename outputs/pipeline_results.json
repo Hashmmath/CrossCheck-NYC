@@ -1,0 +1,52 @@
+{
+  "inference": {
+    "status": "demo_mode",
+    "reason": "api_error: Zoom level must be specified"
+  },
+  "osm": {
+    "status": "exists",
+    "count": 51629
+  },
+  "ground_truth": {
+    "status": "success",
+    "count": 460
+  },
+  "predictions": {
+    "status": "synthetic",
+    "count": 580
+  },
+  "metrics": {
+    "mean_iou": 0.4913705798465285,
+    "mean_f1": 0.5037891815478843,
+    "mean_precision": 0.5167675064413245,
+    "mean_recall": 0.49180798134561626,
+    "std_iou": 0.4753489554814191,
+    "num_tiles": 580
+  },
+  "calibration": {
+    "ece": 0.07701284511604906,
+    "mce": 0.4248162363514756
+  },
+  "visualizations": {
+    "status": "success",
+    "files": [
+      "reliability_diagram.png",
+      "metrics_distribution.png"
+    ]
+  },
+  "stage_b": {
+    "total_detected_pixels": 420893,
+    "total_gt_pixels": 440184,
+    "detection_coverage": 0.9561751449393673,
+    "baseline_features": 51629,
+    "aggregate_metrics": {
+      "mean_iou": 0.4913705798465285,
+      "mean_f1": 0.5037891815478843,
+      "mean_precision": 0.5167675064413245,
+      "mean_recall": 0.49180798134561626,
+      "std_iou": 0.4753489554814191,
+      "num_tiles": 580
+    },
+    "num_tiles": 580
+  }
+}
