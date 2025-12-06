@@ -1,0 +1,121 @@
+{
+  "project_name": "crosscheck_nyc",
+  "description": "CrossCheck NYC - Crosswalk detection analysis for selected NYC locations",
+  "locations": [
+    {
+      "id": "financial_district",
+      "name": "financial_district",
+      "display_name": "Financial District, Manhattan",
+      "location": "Financial District, Manhattan, NY, USA",
+      "bbox": "40.7075, -74.0125, 40.7025, -74.0065",
+      "borough": "Manhattan",
+      "category": "dense_urban",
+      "characteristics": [
+        "Narrow streets",
+        "Irregular grid pattern", 
+        "High-rise buildings causing shadows",
+        "Heavy pedestrian traffic",
+        "Historic street layout"
+      ],
+      "notes": "Dense urban core with complex street patterns. Good for testing model on irregular grids and shadow conditions."
+    },
+    {
+      "id": "central_park_south",
+      "name": "central_park_south",
+      "display_name": "Central Park South (Open Area)",
+      "location": "Central Park South, Manhattan, NY, USA",
+      "bbox": "40.7680, -73.9800, 40.7640, -73.9740",
+      "borough": "Manhattan",
+      "category": "open_area",
+      "characteristics": [
+        "Wide streets and avenues",
+        "Park edges with clear visibility",
+        "Regular grid pattern",
+        "Less shadow interference",
+        "Clear aerial views"
+      ],
+      "notes": "Open area near Central Park with wide avenues. Contrasts with Financial District - good for comparing model performance in different urban densities."
+    },
+    {
+      "id": "bay_ridge",
+      "name": "bay_ridge",
+      "display_name": "Bay Ridge, Brooklyn",
+      "location": "Bay Ridge, Brooklyn, NY, USA",
+      "bbox": "40.6350, -74.0300, 40.6290, -74.0230",
+      "borough": "Brooklyn",
+      "category": "residential_suburban",
+      "characteristics": [
+        "Residential neighborhood",
+        "Regular grid streets",
+        "Lower building heights",
+        "Mix of commercial and residential",
+        "Suburban-style crossings"
+      ],
+      "notes": "Residential Brooklyn neighborhood. Tests model generalization outside Manhattan's dense urban core."
+    },
+    {
+      "id": "downtown_brooklyn",
+      "name": "downtown_brooklyn",
+      "display_name": "Downtown Brooklyn",
+      "location": "Downtown Brooklyn, Brooklyn, NY, USA",
+      "bbox": "40.6920, -73.9880, 40.6870, -73.9820",
+      "borough": "Brooklyn",
+      "category": "urban_commercial",
+      "characteristics": [
+        "Major transit hub",
+        "Mixed commercial/residential",
+        "Wide intersections",
+        "High pedestrian volume",
+        "Multiple subway entrances"
+      ],
+      "notes": "Brooklyn's urban center with major intersections and transit connections. Good for testing on Brooklyn's distinct urban fabric."
+    }
+  ],
+  "location_comparison": {
+    "purpose": "Compare model performance across different urban morphologies",
+    "contrasts": [
+      {
+        "pair": ["financial_district", "central_park_south"],
+        "contrast": "Dense irregular grid vs Open regular grid (within Manhattan)"
+      },
+      {
+        "pair": ["financial_district", "downtown_brooklyn"],
+        "contrast": "Manhattan dense vs Brooklyn dense urban cores"
+      },
+      {
+        "pair": ["bay_ridge", "downtown_brooklyn"],
+        "contrast": "Residential vs Commercial (within Brooklyn)"
+      },
+      {
+        "pair": ["central_park_south", "bay_ridge"],
+        "contrast": "Manhattan open vs Brooklyn residential"
+      }
+    ]
+  },
+  "reference_datasets": {
+    "osm_crossings": {
+      "source": "OpenStreetMap",
+      "url": "https://download.geofabrik.de/north-america/us/new-york.html",
+      "filter": "highway=crossing"
+    },
+    "vision_zero": {
+      "source": "NYC Vision Zero",
+      "url": "https://catalog.data.gov/dataset/dot-vzv-enhanced-crossings-20240814"
+    },
+    "raised_crosswalks": {
+      "source": "NYC Open Data",
+      "url": "https://data.cityofnewyork.us/Transportation/Raised-Crosswalk-Locations/uh2s-ftgh"
+    },
+    "street_centerline": {
+      "source": "NYC LION",
+      "url": "https://data.cityofnewyork.us/City-Government/LION/2v4z-66xt"
+    }
+  },
+  "tile2net_config": {
+    "zoom": 19,
+    "dump_percent": 100,
+    "base_tilesize": 256,
+    "stitch_step": 4,
+    "crs": 4326
+  }
+}
