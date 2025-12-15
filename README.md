@@ -1,4 +1,4 @@
-# 🚶 CrossCheck-NYC
+# 🚶 CrossCheck NYC
 
 **A Visual Analytics Tool for Assessing the Trustworthiness of AI-Mapped Crosswalk Data**
 
